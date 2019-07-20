@@ -162,13 +162,93 @@ int * findElementSolution2(int aNums[], int iLen, int iTarget)
 
 	return NULL;
 }
+
+int * findElementSolution3(int aNums[], int iLen, int iTarget)
+{
+	int i = 0;
+	int *piResult = NULL;
+	int *piTmp = NULL;
+	int iMin = aNums[0];
+	int iMax = iMin;
+	int iValue = 0;
+
+	piResult = (int *)malloc(2 * sizeof(int));
+	if (NULL == piResult)
+	{
+		return NULL;
+	}
+	
+	/* find min max */
+	for (i = 0; i < iLen; i++)
+	{
+		if (aNums[i] > iMax)
+		{
+			iMax = aNums[i];
+		}
+		if (aNums[i] < iMin)
+		{
+			iMin = aNums[i];
+		}
+	}
+
+	piTmp = (int *)malloc((iMax - iMin + 1) * sizeof(int));
+	if (NULL == piTmp)
+	{
+		if (NULL != piResult)
+		{
+			free(piResult);
+		}
+		return NULL;
+	}
+
+	memset(piTmp, -1, (iMax - iMin + 1) * sizeof(int));
+
+	for (i = 0; i < iLen; i++)
+	{
+		iValue = iTarget - aNums[i];
+		if ((iValue < iMin) || (iValue > iMax))
+		{
+			continue;
+		}
+
+		if (piTmp[iValue - iMin] != -1)
+		{
+			if (i < piTmp[iValue - iMin] - 1)
+			{
+				piResult[0] = i;
+				piResult[1] = piTmp[iValue - iMin] - 1;
+			}
+			else
+			{
+				piResult[0] = piTmp[iValue - iMin] - 1;
+				piResult[1] = i;
+
+			}
+			if (NULL != piTmp)
+			{
+				free(piTmp);
+			}
+			printf("result %d, %d\n", aNums[piResult[0]], aNums[piResult[1]]);
+
+			return piResult;
+		}
+		else
+		{
+			piTmp[aNums[i] - iMin] = i + 1;
+		}
+	}
+
+	return NULL;
+}
+
 int main()
 {
-	int aNums[] = { -5, 19, 8, -1, 2, 7, 11, 16 };
+	int aNums[] = { -5, 19, 8, -1, 1, 7, 11, 16 };
 	int *piNums = NULL;
 
 	//piNums = findElementSolution1(aNums, sizeof(aNums) / sizeof(int), 10);
-	piNums = findElementSolution2(aNums, sizeof(aNums) / sizeof(int), 10);
+	//piNums = findElementSolution2(aNums, sizeof(aNums) / sizeof(int), 10);
+	piNums = findElementSolution3(aNums, sizeof(aNums) / sizeof(int), 10);
 	if (NULL == piNums)
 	{
 		printf("No result\n");
