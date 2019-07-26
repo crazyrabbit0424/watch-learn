@@ -1,7 +1,8 @@
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
-int* twoSum(int* nums, int numsSize, int target, int* returnSize){
+int* twoSum(int* nums, int numsSize, int target, int* returnSize)
+{
 	int i = 0;
 	int *piResult = NULL;
 	int *piTmp = NULL;
@@ -60,7 +61,6 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize){
 			{
 				piResult[0] = piTmp[iValue - iMin] - 1;
 				piResult[1] = i;
-
 			}
 			if (NULL != piTmp)
 			{
